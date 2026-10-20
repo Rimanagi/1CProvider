@@ -1,0 +1,96 @@
+[project]
+name = "1c-provider"
+version = "0.1.0"
+description = "1C Provider - API service for 1C!"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "dishka>=1.10.1",
+    "fastapi>=0.147.0",
+    "httpx>=0.28.1",
+    "pydantic>=2.14.1",
+    "pydantic-settings>=2.16.0",
+    "structlog>=26.1.0",
+    "tenacity>=9.2.1",
+    "uvicorn[standard]>=0.30.0",
+]
+
+[dependency-groups]
+dev = [
+    "pyright>=1.1.414",
+    "pytest>=9.1.1",
+    "pytest-asyncio>=1.4.0",
+    "ruff>=0.17.1",
+]
+
+
+[tool.pyright]
+include = [
+    "src",
+    "tests",
+]
+exclude = [
+    "**/__pycache__",
+]
+
+reportMissingImports = "error"
+reportMissingTypeStubs = false
+
+pythonVersion = "3.11"
+pythonPlatform = "Linux"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+
+
+[tool.ruff.lint]
+select = [
+    "E",     # E, F, B — базовая корректность и возможные баги;
+    "F",
+    "B",
+    "UP",    #UP — современный Python 3.11;
+    "ASYNC", #ASYNC — защита async-кода;
+    "I",     #I — импорты;
+    "PT",    # PT — качество pytest-тестов.
+]
+
+
+[tool.ruff]
+# Exclude a variety of commonly ignored directories.
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".ipynb_checkpoints",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pyenv",
+    ".pytest_cache",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    ".vscode",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "site-packages",
+    "venv",
+]
+
+line-length = 100
+indent-width = 4
+
+# Assume Python 3.11
+target-version = "py311"
+
