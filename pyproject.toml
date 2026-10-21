@@ -97,5 +97,6 @@ testpaths = [
     "tests",
     "integration",
 ]
-pythonpath = [".", "src"]
+pythonpath = ["."]
 asyncio_mode = "auto"
+

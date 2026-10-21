@@ -10,5 +10,5 @@ router = APIRouter(
 
 @router.get("/", response_model=HealthCheck)
 async def get_health():
-    status = HealthCheck()
+    status = HealthCheck(service="?", version="?")
     return status
