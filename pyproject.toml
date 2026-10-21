@@ -39,11 +39,6 @@ reportMissingTypeStubs = false
 pythonVersion = "3.11"
 pythonPlatform = "Linux"
 
-[tool.pytest.ini_options]
-pythonpath = ["src"]
-testpaths = ["tests"]
-asyncio_mode = "auto"
-
 
 [tool.ruff.lint]
 select = [
@@ -94,3 +89,13 @@ indent-width = 4
 # Assume Python 3.11
 target-version = "py311"
 
+
+[tool.pytest]
+minversion = "9.0"
+addopts = ["-ra", "-q"]
+testpaths = [
+    "tests",
+    "integration",
+]
+pythonpath = [".", "src"]
+asyncio_mode = "auto"

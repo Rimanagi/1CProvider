@@ -4,16 +4,22 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class App(BaseModel):
     title: str = "1C Provider"
+    version: str = "0.1.0"
     host: str
     port: int
+
+    @property
+    def url(self) -> str:
+        return f"{self.host}:{self.port}"
 
 
 class Settings(BaseSettings):
     app: App
     model_config = SettingsConfigDict(
-        env_file= ".env",
+        env_file=".env",
         env_nested_delimiter="__",
         # env_prefix= ""
     )
 
-settings = Settings() # pyright: ignore[reportCallIssue]
+
+settings = Settings()  # pyright: ignore[reportCallIssue]
