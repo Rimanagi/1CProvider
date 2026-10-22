@@ -6,6 +6,7 @@ from dishka import make_async_container
 from dishka.integrations.fastapi import setup_dishka
 from fastapi import FastAPI
 
+from src.app.providers import OneCProvider
 from src.app.api import router as api_router
 from src.app.core.config import Settings
 from src.app.providers import SettingsProvider
@@ -14,7 +15,10 @@ log = structlog.get_logger(__name__)
 
 
 def create_app(settings: Settings) -> FastAPI:
-    async_container = make_async_container(SettingsProvider(settings))
+    async_container = make_async_container(
+        SettingsProvider(settings),
+        OneCProvider()
+    )
 
     @asynccontextmanager
     async def lifespan(_app: FastAPI) -> AsyncIterator[None]:

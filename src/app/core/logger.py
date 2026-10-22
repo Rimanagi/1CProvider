@@ -4,7 +4,6 @@ import structlog
 
 from src.app.core.config import LoggingSettings
 
-
 LOG_LEVELS: dict[str, int] = {
     "DEBUG": logging.DEBUG,
     "INFO": logging.INFO,

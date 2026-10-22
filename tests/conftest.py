@@ -3,12 +3,20 @@ import pytest
 from fastapi import FastAPI
 from httpx import ASGITransport
 
-from src.app.core.config import App, LoggingSettings, Settings
+from src.app.core.config import App, LoggingSettings, OneCSettings, Settings
 from src.app.factory import create_app
+
+@pytest.fixture(scope="session")
+def one_c_base_test_url():
+    return "http://1c.test"
+
+@pytest.fixture(scope="session")
+def app_base_test_url():
+    return "http://test"
 
 
 @pytest.fixture(scope="session")
-def settings():
+def settings(one_c_base_test_url):
     app = App(
         title="1C Provider",
         name="1c-provider",
@@ -21,6 +29,12 @@ def settings():
         app=app,
         log=LoggingSettings(log_level="WARNING"),
         mode=mode,
+        onec=OneCSettings(
+            base_url=one_c_base_test_url,
+            login="login",
+            password="password",
+            timeout_sec=20,
+        )
     )
 
 
@@ -34,6 +48,6 @@ def app(settings) -> FastAPI:
 
 
 @pytest.fixture(scope="function")
-async def cl(app):
-    async with httpx.AsyncClient(base_url="http://test", transport=ASGITransport(app)) as cl:
+async def cl(app, app_base_test_url):
+    async with httpx.AsyncClient(base_url=app_base_test_url, transport=ASGITransport(app)) as cl:
         yield cl
