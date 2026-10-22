@@ -3,8 +3,8 @@ import uvicorn
 from src.app.core.config import Settings
 from src.app.factory import create_app
 
-s = Settings() # pyright: ignore[reportCallIssue]
-app = create_app(s)
+settings = Settings()  # pyright: ignore[reportCallIssue]
+app = create_app(settings)
 
 if __name__ == "__main__":
-    uvicorn.run(app=app, port=s.app.port, host=s.app.host)
+    uvicorn.run(app=app, port=settings.app.port, host=settings.app.host)

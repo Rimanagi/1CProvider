@@ -4,6 +4,6 @@ async def test_health(cl):
     assert response.status_code == 200
     assert response.json() == {
         "status": "OK",
-        "service": "?",
-        "version": "?",
+        "service": "1c-provider",
+        "version": "0.1.0",
     }

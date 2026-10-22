@@ -1,5 +1,8 @@
+from dishka import FromDishka
+from dishka.integrations.fastapi import inject
 from fastapi import APIRouter
 
+from src.app.core.config import Settings
 from src.app.schema.health import HealthCheck
 
 router = APIRouter(
@@ -9,6 +12,10 @@ router = APIRouter(
 
 
 @router.get("/", response_model=HealthCheck)
-async def get_health():
-    status = HealthCheck(service="?", version="?")
+@inject
+async def get_health(settings: FromDishka[Settings]):
+    status = HealthCheck(
+        service=settings.app.name,
+        version=settings.app.version
+    )
     return status
