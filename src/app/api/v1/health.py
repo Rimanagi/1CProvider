@@ -16,6 +16,6 @@ router = APIRouter(
 async def get_health(settings: FromDishka[Settings]) -> HealthCheck:
     status = HealthCheck(
         service=settings.app.name,
-        version=settings.app.version
+        version=settings.app.version,
     )
     return status

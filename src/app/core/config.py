@@ -1,3 +1,5 @@
+from typing import Literal
+
 from pydantic import BaseModel
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -14,11 +16,15 @@ class App(BaseModel):
         return f"{self.host}:{self.port}"
 
 
+class LoggingSettings(BaseModel):
+    log_level: Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"] = "INFO"
+
+
 class Settings(BaseSettings):
     app: App
-    mode: str
+    log: LoggingSettings
+    mode: Literal["DEV", "TEST", "PROD"]
     model_config = SettingsConfigDict(
         env_file=".env",
         env_nested_delimiter="__",
-        # env_prefix= ""
     )

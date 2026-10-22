@@ -3,7 +3,7 @@ import pytest
 from fastapi import FastAPI
 from httpx import ASGITransport
 
-from src.app.core.config import App, Settings
+from src.app.core.config import App, LoggingSettings, Settings
 from src.app.factory import create_app
 
 
@@ -19,6 +19,7 @@ def settings():
     mode = "TEST"
     return Settings(
         app=app,
+        log=LoggingSettings(log_level="WARNING"),
         mode=mode,
     )
 
