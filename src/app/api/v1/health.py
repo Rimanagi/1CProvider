@@ -13,7 +13,7 @@ router = APIRouter(
 
 @router.get("/", response_model=HealthCheck)
 @inject
-async def get_health(settings: FromDishka[Settings]):
+async def get_health(settings: FromDishka[Settings]) -> HealthCheck:
     status = HealthCheck(
         service=settings.app.name,
         version=settings.app.version
