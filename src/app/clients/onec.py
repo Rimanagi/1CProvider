@@ -1,3 +1,6 @@
+import json
+from typing import Any
+
 import httpx
 
 from src.app.schema.onec import DefectCause, TypicalDefect
@@ -10,10 +13,19 @@ class OneCClient:
     async def get_typical_defects(self) -> list[TypicalDefect]:
         response = await self._client.get("TypicalDefects")
         response.raise_for_status()
-        return [TypicalDefect.model_validate(item) for item in response.json()]
+        return [TypicalDefect.model_validate(item) for item in self._parse_response_json(response)]
 
     async def get_defect_causes(self) -> list[DefectCause]:
-        response = await self._client.get("CausesDefects")
+        response = await self._client.get("CausesOfDefects")
         response.raise_for_status()
-        return [DefectCause.model_validate(item) for item in response.json()]
+        return [DefectCause.model_validate(item) for item in self._parse_response_json(response)]
+
+    async def get_repair_facilities(self) -> Any:
+        response = await self._client.get("RepairFacilities")
+        response.raise_for_status()
+        return self._parse_response_json(response)
+
+    @staticmethod
+    def _parse_response_json(response: httpx.Response) -> Any:
+        return json.loads(response.content.decode("cp1251"))
 

@@ -1,3 +1,5 @@
+from typing import Any
+
 from src.app.clients.onec import OneCClient
 from src.app.schema.onec import DefectCause, TypicalDefect
 
@@ -11,3 +13,6 @@ class OneCService:
 
     async def get_defect_causes(self) -> list[DefectCause]:
         return await self._one_c_client.get_defect_causes()
+
+    async def get_repair_facilities(self) -> Any:
+        return await self._one_c_client.get_repair_facilities()

@@ -1,3 +1,5 @@
+from typing import Any
+
 from dishka import FromDishka
 from dishka.integrations.fastapi import inject
 from fastapi import APIRouter
@@ -25,3 +27,9 @@ async def get_defect_causes(
     service: FromDishka[OneCService],
 ) -> list[DefectCause]:
     return await service.get_defect_causes()
+
+
+@router.get("/repair-facilities")
+@inject
+async def get_repair_facilities(service: FromDishka[OneCService]) -> Any:
+    return await service.get_repair_facilities()
