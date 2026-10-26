@@ -25,6 +25,7 @@ class OneCProvider(Provider):
             auth=(settings.onec.login, settings.onec.password),
             base_url=str(settings.onec.base_url),
             timeout=settings.onec.timeout_sec,
+            verify=False,
         ) as cl:
             yield cl
 
