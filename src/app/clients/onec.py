@@ -1,9 +1,11 @@
 import json
+from csv import DictReader
+from io import StringIO
 from typing import Any
 
 import httpx
 
-from src.app.schema.onec import DefectCause, TypicalDefect
+from src.app.schema.onec import DefectCause, IdentifiedDefect, RepairFacility, TypicalDefect
 
 
 class OneCClient:
@@ -13,17 +15,31 @@ class OneCClient:
     async def get_typical_defects(self) -> list[TypicalDefect]:
         response = await self._client.get("TypicalDefects")
         response.raise_for_status()
-        return [TypicalDefect.model_validate(item) for item in self._parse_response_json(response)]
+        return [
+            TypicalDefect.model_validate(item)
+            for item in self._parse_response_json(response)
+        ]
 
     async def get_defect_causes(self) -> list[DefectCause]:
         response = await self._client.get("CausesOfDefects")
         response.raise_for_status()
-        return [DefectCause.model_validate(item) for item in self._parse_response_json(response)]
+        return [
+            DefectCause.model_validate(item)
+            for item in self._parse_response_json(response)
+        ]
 
-    async def get_repair_facilities(self) -> Any:
+    async def get_repair_facilities(self) -> list[RepairFacility]:
         response = await self._client.get("RepairFacilities")
         response.raise_for_status()
-        return self._parse_response_json(response)
+        rows = DictReader(StringIO(response.content.decode("utf-8")), delimiter=";")
+        return [RepairFacility.model_validate(row) for row in rows]
+
+    async def post_identified_defect(self, defect: IdentifiedDefect) -> None:
+        response = await self._client.post(
+            "Identifieddefects",
+            json=defect.model_dump(mode="json"),
+        )
+        response.raise_for_status()
 
     @staticmethod
     def _parse_response_json(response: httpx.Response) -> Any:
