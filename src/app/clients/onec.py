@@ -29,7 +29,8 @@ class OneCClient:
         ]
 
     async def get_repair_facilities(self) -> list[RepairFacility]:
-        response = await self._client.get("RepairFacilities")
+        response = await self._client.post("RepairFacilities")
+        print(response.text)
         response.raise_for_status()
         rows = DictReader(StringIO(response.content.decode("utf-8")), delimiter=";")
         return [RepairFacility.model_validate(row) for row in rows]
@@ -39,6 +40,7 @@ class OneCClient:
             "Identifieddefects",
             json=defect.model_dump(mode="json"),
         )
+        print(response.text, response.status_code)
         response.raise_for_status()
 
     @staticmethod
